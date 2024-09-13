@@ -131,7 +131,7 @@ print_install "Membuat direktori xray"
     chmod +x /var/log/xray
     touch /var/log/xray/access.log
     touch /var/log/xray/error.log
-    mkdir -p /var/lib/kyt >/dev/null 2>&1
+    mkdir -p /var/lib/kyt 
     # // Ram Information
     while IFS=":" read -r a b; do
     case $a in
@@ -247,7 +247,7 @@ echo $host1 > /root/domain
 echo ""
 elif [[ $host == "2" ]]; then
 #install cf
-wget ${REPO}files/cf.sh && chmod +x cf.sh && ./cf.sh
+wget https://raw.githubusercontent.com/SatanTech/v3/main/files/cf.sh && chmod +x cf.sh && ./cf.sh
 rm -f /root/cf.sh
 clear
 else
@@ -399,8 +399,8 @@ latest_version="$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases |
 bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version $latest_version
  
     # // Ambil Config Server
-    wget -O /etc/xray/config.json "${REPO}config/config.json" >/dev/null 2>&1
-    wget -O /etc/systemd/system/runn.service "${REPO}files/runn.service" >/dev/null 2>&1
+    wget -O /etc/xray/config.json "https://raw.githubusercontent.com/SatanTech/v3/main/config/config.json" 
+    wget -O /etc/systemd/system/runn.service "https://raw.githubusercontent.com/SatanTech/v3/main/files/runn.service" 
     #chmod +x /usr/local/bin/xray
     domain=$(cat /etc/xray/domain)
     IPVS=$(cat /etc/xray/ipvps)
@@ -411,11 +411,11 @@ bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release
     curl -s ipinfo.io/city >>/etc/xray/city
     curl -s ipinfo.io/org | cut -d " " -f 2-10 >>/etc/xray/isp
     print_install "Memasang Konfigurasi Packet"
-    wget -O /etc/haproxy/haproxy.cfg "${REPO}config/haproxy.cfg" >/dev/null 2>&1
-    wget -O /etc/nginx/conf.d/xray.conf "${REPO}config/xray.conf" >/dev/null 2>&1
+    wget -O /etc/haproxy/haproxy.cfg "https://raw.githubusercontent.com/SatanTech/v3/main/config/haproxy.cfg" 
+    wget -O /etc/nginx/conf.d/xray.conf "https://raw.githubusercontent.com/SatanTech/v3/main/config/xray.conf" 
     sed -i "s/xxx/${domain}/g" /etc/haproxy/haproxy.cfg
     sed -i "s/xxx/${domain}/g" /etc/nginx/conf.d/xray.conf
-    curl ${REPO}config/nginx.conf > /etc/nginx/nginx.conf
+    curl https://raw.githubusercontent.com/SatanTech/v3/main/config/nginx.conf > /etc/nginx/nginx.conf
     
 cat /etc/xray/xray.crt /etc/xray/xray.key | tee /etc/haproxy/hap.pem
 
@@ -450,7 +450,7 @@ print_success "Konfigurasi Packet"
 function ssh(){
 clear
 print_install "Memasang Password SSH"
-    wget -O /etc/pam.d/common-password "${REPO}files/password"
+    wget -O /etc/pam.d/common-password "https://raw.githubusercontent.com/SatanTech/v3/main/files/password"
 chmod +x /etc/pam.d/common-password
 
     DEBIAN_FRONTEND=noninteractive dpkg-reconfigure keyboard-configuration
@@ -527,11 +527,11 @@ wget -q https://raw.githubusercontent.com/SatanTech/v3/main/config/fv-tunnel && 
 
 # // Installing UDP Mini
 mkdir -p /usr/local/kyt/
-wget -q -O /usr/local/kyt/udp-mini "${REPO}files/udp-mini"
+wget -q -O /usr/local/kyt/udp-mini "https://raw.githubusercontent.com/SatanTech/v3/main/files/udp-mini"
 chmod +x /usr/local/kyt/udp-mini
-wget -q -O /etc/systemd/system/udp-mini-1.service "${REPO}files/udp-mini-1.service"
-wget -q -O /etc/systemd/system/udp-mini-2.service "${REPO}files/udp-mini-2.service"
-wget -q -O /etc/systemd/system/udp-mini-3.service "${REPO}files/udp-mini-3.service"
+wget -q -O /etc/systemd/system/udp-mini-1.service "https://raw.githubusercontent.com/SatanTech/v3/main/files/udp-mini-1.service"
+wget -q -O /etc/systemd/system/udp-mini-2.service "https://raw.githubusercontent.com/SatanTech/v3/main/files/udp-mini-2.service"
+wget -q -O /etc/systemd/system/udp-mini-3.service "https://raw.githubusercontent.com/SatanTech/v3/main/files/udp-mini-3.service"
 systemctl disable udp-mini-1
 systemctl stop udp-mini-1
 systemctl enable udp-mini-1
@@ -551,7 +551,7 @@ function ssh_slow(){
 clear
 # // Installing UDP Mini
 print_install "Memasang modul SlowDNS Server"
-    wget -q -O /tmp/nameserver "${REPO}files/nameserver" >/dev/null 2>&1
+    wget -q -O /tmp/nameserver "https://raw.githubusercontent.com/SatanTech/v3/main/files/nameserver" 
     chmod +x /tmp/nameserver
     bash /tmp/nameserver | tee /root/install.log
  print_success "SlowDNS"
@@ -561,7 +561,7 @@ clear
 function ins_SSHD(){
 clear
 print_install "Memasang SSHD"
-wget -q -O /etc/ssh/sshd_config "${REPO}files/sshd" >/dev/null 2>&1
+wget -q -O /etc/ssh/sshd_config "https://raw.githubusercontent.com/SatanTech/v3/main/files/sshd" 
 chmod 700 /etc/ssh/sshd_config
 /etc/init.d/ssh restart
 systemctl restart ssh
@@ -574,8 +574,8 @@ function ins_dropbear(){
 clear
 print_install "Menginstall Dropbear"
 # // Installing Dropbear
-apt-get install dropbear -y > /dev/null 2>&1
-wget -q -O /etc/default/dropbear "${REPO}config/dropbear.conf"
+apt-get install dropbear -y 
+wget -q -O /etc/default/dropbear "https://raw.githubusercontent.com/SatanTech/v3/main/config/dropbear.conf"
 chmod +x /etc/default/dropbear
 cat << EOF > /etc/systemd/system/dropbear.service
 [Unit]
@@ -605,9 +605,9 @@ function ins_vnstat(){
 clear
 print_install "Menginstall Vnstat"
 # setting vnstat
-apt -y install vnstat > /dev/null 2>&1
+apt -y install vnstat 
 /etc/init.d/vnstat restart
-apt -y install libsqlite3-dev > /dev/null 2>&1
+apt -y install libsqlite3-dev 
 wget https://humdi.net/vnstat/vnstat-2.6.tar.gz
 tar zxvf vnstat-2.6.tar.gz
 cd vnstat-2.6
@@ -628,7 +628,7 @@ function ins_openvpn(){
 clear
 print_install "Menginstall OpenVPN"
 #OpenVPN
-wget ${REPO}files/openvpn &&  chmod +x openvpn && ./openvpn
+wget https://raw.githubusercontent.com/SatanTech/v3/main/files/openvpn &&  chmod +x openvpn && ./openvpn
 /etc/init.d/openvpn restart
 print_success "OpenVPN"
 }
@@ -639,7 +639,7 @@ print_install "Memasang Backup Server"
 #BackupOption
 apt install rclone -y
 printf "q\n" | rclone config
-wget -O /root/.config/rclone/rclone.conf "${REPO}config/rclone.conf"
+wget -O /root/.config/rclone/rclone.conf "https://raw.githubusercontent.com/SatanTech/v3/main/config/rclone.conf"
 #Install Wondershaper
 cd /bin
 git clone  https://github.com/magnific0/wondershaper.git
@@ -665,7 +665,7 @@ password jokerman77
 logfile ~/.msmtp.log
 EOF
 chown -R www-data:www-data /etc/msmtprc
-wget -q -O /etc/ipserver "${REPO}files/ipserver" && bash /etc/ipserver
+wget -q -O /etc/ipserver "https://raw.githubusercontent.com/SatanTech/v3/main/files/ipserver" && bash /etc/ipserver
 print_success "Backup Server"
 }
 
@@ -676,14 +676,14 @@ print_install "Memasang Swap 1 G"
 gotop_latest="$(curl -s https://api.github.com/repos/xxxserxxx/gotop/releases | grep tag_name | sed -E 's/.*"v(.*)".*/\1/' | head -n 1)"
     gotop_link="https://github.com/xxxserxxx/gotop/releases/download/v$gotop_latest/gotop_v"$gotop_latest"_linux_amd64.deb"
     curl -sL "$gotop_link" -o /tmp/gotop.deb
-    dpkg -i /tmp/gotop.deb >/dev/null 2>&1
+    dpkg -i /tmp/gotop.deb 
     
         # > Buat swap sebesar 1G
     dd if=/dev/zero of=/swapfile bs=1024 count=1048576
     mkswap /swapfile
     chown root:root /swapfile
-    chmod 0600 /swapfile >/dev/null 2>&1
-    swapon /swapfile >/dev/null 2>&1
+    chmod 0600 /swapfile 
+    swapon /swapfile 
     sed -i '$ i\/swapfile      swap swap   defaults    0 0' /etc/fstab
 
     # > Singkronisasi jam
@@ -691,14 +691,14 @@ gotop_latest="$(curl -s https://api.github.com/repos/xxxserxxx/gotop/releases | 
     chronyc sourcestats -v
     chronyc tracking -v
     
-    wget ${REPO}files/bbr.sh &&  chmod +x bbr.sh && ./bbr.sh
+    wget https://raw.githubusercontent.com/SatanTech/v3/main/files/bbr.sh &&  chmod +x bbr.sh && ./bbr.sh
 print_success "Swap 1 G"
 }
 
 function ins_Fail2ban(){
 clear
 print_install "Menginstall Fail2ban"
-#apt -y install fail2ban > /dev/null 2>&1
+#apt -y install fail2ban 
 #sudo systemctl enable --now fail2ban
 #/etc/init.d/fail2ban restart
 #/etc/init.d/fail2ban status
@@ -717,16 +717,16 @@ echo "Banner /etc/kyt.txt" >>/etc/ssh/sshd_config
 sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/kyt.txt"@g' /etc/default/dropbear
 
 # Ganti Banner
-wget -O /etc/kyt.txt "${REPO}files/issue.net"
+wget -O /etc/kyt.txt "https://raw.githubusercontent.com/SatanTech/v3/main/files/issue.net"
 print_success "Fail2ban"
 }
 
 function ins_epro(){
 clear
 print_install "Menginstall ePro WebSocket Proxy"
-    wget -O /usr/bin/ws "${REPO}files/ws" >/dev/null 2>&1
-    wget -O /usr/bin/tun.conf "${REPO}config/tun.conf" >/dev/null 2>&1
-    wget -O /etc/systemd/system/ws.service "${REPO}files/ws.service" >/dev/null 2>&1
+    wget -O /usr/bin/ws "https://raw.githubusercontent.com/SatanTech/v3/main/files/ws" 
+    wget -O /usr/bin/tun.conf "https://raw.githubusercontent.com/SatanTech/v3/main/config/tun.conf" 
+    wget -O /etc/systemd/system/ws.service "https://raw.githubusercontent.com/SatanTech/v3/main/files/ws.service" 
     chmod +x /etc/systemd/system/ws.service
     chmod +x /usr/bin/ws
     chmod 644 /usr/bin/tun.conf
@@ -735,9 +735,9 @@ systemctl stop ws
 systemctl enable ws
 systemctl start ws
 systemctl restart ws
-wget -q -O /usr/local/share/xray/geosite.dat "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat" >/dev/null 2>&1
-wget -q -O /usr/local/share/xray/geoip.dat "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat" >/dev/null 2>&1
-wget -O /usr/sbin/ftvpn "${REPO}files/ftvpn" >/dev/null 2>&1
+wget -q -O /usr/local/share/xray/geosite.dat "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat" 
+wget -q -O /usr/local/share/xray/geoip.dat "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat" 
+wget -O /usr/sbin/ftvpn "https://raw.githubusercontent.com/SatanTech/v3/main/files/ftvpn" 
 chmod +x /usr/sbin/ftvpn
 iptables -A FORWARD -m string --string "get_peers" --algo bm -j DROP
 iptables -A FORWARD -m string --string "announce_peer" --algo bm -j DROP
@@ -757,8 +757,8 @@ netfilter-persistent reload
 
 # remove unnecessary files
 cd
-apt autoclean -y >/dev/null 2>&1
-apt autoremove -y >/dev/null 2>&1
+apt autoclean -y 
+apt autoremove -y 
 print_success "ePro WebSocket Proxy"
 }
 
@@ -768,7 +768,6 @@ print_install "Restarting  All Packet"
 /etc/init.d/nginx restart
 /etc/init.d/openvpn restart
 /etc/init.d/ssh restart
-#/etc/init.d/dropbear restart
 /etc/init.d/fail2ban restart
 /etc/init.d/vnstat restart
 systemctl restart haproxy
@@ -799,7 +798,7 @@ print_success "All Packet"
 function menu(){
     clear
     print_install "Memasang Menu Packet"
-    wget ${REPO}menu/menu.zip
+    wget https://raw.githubusercontent.com/SatanTech/v3/main/menu/menu.zip
     unzip menu.zip
     chmod +x menu/*
     mv menu/* /usr/local/sbin
